@@ -1,5 +1,12 @@
-import 'dart:async';
-import 'package:flutter/material.dart';
+import 'dart:async' show StreamController;
+import 'package:flutter/material.dart'
+    show
+        StatelessWidget,
+        Key,
+        AsyncWidgetBuilder,
+        BuildContext,
+        Widget,
+        StreamBuilder;
 
 class StreamWidget extends StatelessWidget {
   const StreamWidget({

@@ -1,5 +1,7 @@
-import 'dart:async';
-import 'package:idkit_tableview/src/tableview_indexpath.dart';
+import 'dart:async' show StreamController;
+import 'package:idkit_tableview/src/tableview_indexpath.dart'
+    show IDKitIndexPath;
+import 'package:idkit_tableview/src/tableview_style.dart' show TableViewRefresh;
 
 /// TableView update control object class.
 class IDKitUpdateControl {
@@ -59,7 +61,15 @@ class IDKitUpdateControl {
   /// Update all views in a section.
   void updateRowsInSection(int section) {
     final String key = 'com.idkit.section.row-$section';
-    _updateStreamController?.add(IDKitUpdateType(key: key, single: false));
+    _updateStreamController
+        ?.add(IDKitUpdateType(key: key, refresh: TableViewRefresh.section));
+  }
+
+  /// All table views are updated.
+  void updateTableView() {
+    const String key = 'com.idkit.tableview';
+    _updateStreamController
+        ?.add(const IDKitUpdateType(key: key, refresh: TableViewRefresh.all));
   }
 }
 
@@ -67,12 +77,12 @@ class IDKitUpdateControl {
 class IDKitUpdateType {
   const IDKitUpdateType({
     required this.key,
-    this.single = true,
+    this.refresh = TableViewRefresh.single,
   });
 
   /// Updated key.
   final String key;
 
   /// Update form.
-  final bool single;
+  final TableViewRefresh refresh;
 }

@@ -44,14 +44,30 @@ class _MyHomePageState extends State<MyHomePage> {
             return Container(
               height: 100,
               color: Colors.pink,
-              child: GestureDetector(
-                child: Text('更新按钮 ---${map['a']}'),
-                onTap: () {
-                  map['a'] = '330';
-                  _updateTableView.updateHeaderTableView();
-                  list = list.map((e) => e * 10).toList();
-                  _updateTableView.updateRowsInSection(1);
-                },
+              child: Row(
+                children: [
+                  GestureDetector(
+                    child: Text('更新按钮 ---${map['a']}'),
+                    onTap: () {
+                      map['a'] = '330';
+                      _updateTableView.updateHeaderTableView();
+                    },
+                  ),
+                  GestureDetector(
+                    child: Text('更新按钮 ---${map['a']}'),
+                    onTap: () {
+                      map['a'] = '430';
+                      list = list.map((e) => e * 10).toList();
+                      _updateTableView.updateRowsInSection(1);
+                    },
+                  ),
+                  GestureDetector(
+                    child: Text('更新按钮 ---${map['a']}'),
+                    onTap: () {
+                      _updateTableView.updateTableView();
+                    },
+                  )
+                ],
               ),
             );
           },

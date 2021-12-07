@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show Widget;
 import 'package:idkit_tableview/src/tableview_indexpath.dart';
 
 /// The main method declaration of the list.
