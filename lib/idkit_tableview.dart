@@ -1,7 +1,6 @@
 library idkit_tableview;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export 'src/tableview.dart';
+export 'src/tableview_indexpath.dart';
+export 'src/tableview_style.dart';
+export 'src/tableview_update.dart';
