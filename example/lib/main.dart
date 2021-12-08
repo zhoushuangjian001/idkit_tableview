@@ -13,30 +13,34 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SingleTableView(),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
+  const MyHomePage({Key? key}) : super(key: key);
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final Map<String, String> map = <String, String>{'a': '110', 'b': '220'};
-  List<int> list = [1, 2, 3, 4, 5, 6];
+  final Map<String, String> map = <String, String>{
+    'Num': '110',
+    'Count': '220'
+  };
+  List<int> list = <int>[1, 2, 3, 4, 5, 6];
   final IDKitUpdateControl _updateTableView = IDKitUpdateControl();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: const Text('Multiple List'),
       ),
       body: Container(
+        alignment: Alignment.center,
         child: IDKitTableView(
           style: TableViewStyle.group,
           updateControl: _updateTableView,
@@ -45,24 +49,43 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 100,
               color: Colors.pink,
               child: Row(
-                children: [
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
                   GestureDetector(
-                    child: Text('更新按钮 ---${map['a']}'),
+                    child: Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        border: Border.all(),
+                      ),
+                      child: Text(' Single update-${map['Num']}'),
+                    ),
                     onTap: () {
-                      map['a'] = '330';
+                      map['Num'] = '330';
                       _updateTableView.updateHeaderTableView();
                     },
                   ),
                   GestureDetector(
-                    child: Text('更新按钮 ---${map['a']}'),
+                    child: Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        border: Border.all(),
+                      ),
+                      child: Text('Multiple updates-${map['Num']}'),
+                    ),
                     onTap: () {
-                      map['a'] = '430';
-                      list = list.map((e) => e * 10).toList();
+                      map['Num'] = '430';
+                      list = list.map((int e) => e * 10).toList();
                       _updateTableView.updateRowsInSection(1);
                     },
                   ),
                   GestureDetector(
-                    child: Text('更新按钮 ---${map['a']}'),
+                    child: Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        border: Border.all(),
+                      ),
+                      child: Text('Update all-${map['Num']}'),
+                    ),
                     onTap: () {
                       _updateTableView.updateTableView();
                     },
@@ -75,35 +98,43 @@ class _MyHomePageState extends State<MyHomePage> {
             return Container(
               height: 100,
               color: Colors.pink,
-              child: Text('列表--底部- ${map['a']}'),
+              child: Text('Table view bottom - ${map['Num']}'),
             );
           },
           headerInSection: (_, int section) {
             return Container(
               height: 60,
               color: Colors.yellow,
-              child: Text('组头 - $section--${map['a']}'),
+              child: Text(
+                  'Table view head view of $section group - ${map['Num']}'),
             );
           },
           footerInSection: (_, int section) {
             return Container(
               height: 60,
               color: Colors.yellow,
-              child: Text('组尾 - $section'),
+              child: Text('Table view fotter view of $section group'),
             );
           },
-          numberOfSection: (_) => 6,
+          numberOfSection: (_) => 4,
           numberOfRowInSection: (_, int section) {
-            return section % 2 == 0 ? 2 : 6;
+            final int res = section % 2;
+            return res == 0 ? 2 : 6;
           },
           itemForRowAtIndexPath: (_, IDKitIndexPath indexPath) {
             if (indexPath.section == 1) {
               return Card(
-                child: Text('卡片 - ${list[indexPath.row]}'),
+                child: Text('Card - ${list[indexPath.row]}'),
               );
             } else {
               return Container(
-                child: Text('子元素'),
+                alignment: Alignment.center,
+                child: Row(
+                  children: const <Widget>[
+                    Icon(Icons.access_alarm_outlined),
+                    Text('Item'),
+                  ],
+                ),
                 height: 100,
               );
             }
@@ -113,7 +144,8 @@ class _MyHomePageState extends State<MyHomePage> {
             return Container(
               height: 20,
               color: Colors.white,
-              child: const Text('----------组分割-------------'),
+              child:
+                  Text('------------ Group split view -$section ------------'),
             );
           },
         ),
