@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: SingleTableView(),
     );
   }
 }
@@ -115,6 +115,58 @@ class _MyHomePageState extends State<MyHomePage> {
               color: Colors.white,
               child: const Text('----------组分割-------------'),
             );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+/// Single table view
+class SingleTableView extends StatefulWidget {
+  const SingleTableView({Key? key}) : super(key: key);
+
+  @override
+  _SingleTableViewState createState() => _SingleTableViewState();
+}
+
+class _SingleTableViewState extends State<SingleTableView> {
+  final List<int> list = List<int>.generate(10, (int index) => 0);
+  final IDKitUpdateControl updateControl = IDKitUpdateControl();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Single List'),
+      ),
+      body: Container(
+        alignment: Alignment.center,
+        child: IDKitTableView(
+          updateControl: updateControl,
+          itemForRowAtIndexPath: (_, IDKitIndexPath indexPath) {
+            return Container(
+              height: 60,
+              alignment: Alignment.center,
+              color: Colors.red,
+              child: Row(
+                children: <Widget>[
+                  const Icon(Icons.ac_unit_outlined),
+                  GestureDetector(
+                    onTap: () {
+                      list[indexPath.row] += 1;
+                      updateControl.updateRowInSection(indexPath);
+                    },
+                    child: Text('item -- ${indexPath.row}'),
+                  ),
+                  const Spacer(),
+                  Text(list[indexPath.row].toString()),
+                ],
+              ),
+            );
+          },
+          numberOfRowInSection: (_, __) {
+            return list.length;
           },
         ),
       ),

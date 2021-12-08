@@ -115,10 +115,10 @@ class _IDKitTableViewState extends State<IDKitTableView> {
 
   /// The key-value collection of the subscribers of each module.
   late HashMap<String, StreamController<bool>> streamControllerMap =
-      HashMap<String, StreamController<bool>>.identity();
+      HashMap<String, StreamController<bool>>();
 
   /// Prevent scrolling multiple times to build the view.
-  late HashMap<String, Widget> widgetsMap = HashMap<String, Widget>.identity();
+  late HashMap<String, Widget> widgetsMap = HashMap<String, Widget>();
 
   /// Reset the collection to avoid duplication.
   void _cleanAllList() {
@@ -134,14 +134,18 @@ class _IDKitTableViewState extends State<IDKitTableView> {
     // Top view of table view.
     if (widget.headerInTableView != null) {
       const String key = 'com.idkit.header';
-      addStreamWidgetToList(key, (_, AsyncSnapshot<bool> snapshot) {
+      _addStreamWidgetToList(key, (_, AsyncSnapshot<bool> snapshot) {
         final bool state = snapshot.data!;
+        final bool contains = widgetsMap.containsKey(key);
         if (state) {
           final Widget child = widget.headerInTableView!(widget);
-          widgetsMap.update(key, (_) => child);
+          if (contains) {
+            widgetsMap.update(key, (_) => child);
+          } else {
+            widgetsMap.putIfAbsent(key, () => child);
+          }
           return child;
         } else {
-          final bool contains = widgetsMap.containsKey(key);
           if (contains) {
             return widgetsMap[key]!;
           } else {
@@ -162,14 +166,18 @@ class _IDKitTableViewState extends State<IDKitTableView> {
       // Header view.
       if (widget.headerInSection != null) {
         final String key = 'com.idkit.section.header-$section';
-        addStreamWidgetToList(key, (_, AsyncSnapshot<bool> snapshot) {
+        _addStreamWidgetToList(key, (_, AsyncSnapshot<bool> snapshot) {
           final bool state = snapshot.data!;
+          final bool contains = widgetsMap.containsKey(key);
           if (state) {
             final Widget child = widget.headerInSection!(widget, section);
-            widgetsMap.update(key, (_) => child);
+            if (contains) {
+              widgetsMap.update(key, (_) => child);
+            } else {
+              widgetsMap.putIfAbsent(key, () => child);
+            }
             return child;
           } else {
-            final bool contains = widgetsMap.containsKey(key);
             if (contains) {
               return widgetsMap[key]!;
             } else {
@@ -187,16 +195,20 @@ class _IDKitTableViewState extends State<IDKitTableView> {
         final IDKitIndexPath indexPath =
             IDKitIndexPath(section: section, row: row);
         final String key = 'com.idkit.section.row-$section-$row';
-        addStreamWidgetToList(key, (_, AsyncSnapshot<bool> snapshot) {
+        _addStreamWidgetToList(key, (_, AsyncSnapshot<bool> snapshot) {
           final bool state = snapshot.data!;
+          final bool contains = widgetsMap.containsKey(key);
           if (state) {
             final Widget child =
                 widget.itemForRowAtIndexPath?.call(widget, indexPath) ??
                     Container();
-            widgetsMap.update(key, (_) => child);
+            if (contains) {
+              widgetsMap.update(key, (_) => child);
+            } else {
+              widgetsMap.putIfAbsent(key, () => child);
+            }
             return child;
           } else {
-            final bool contains = widgetsMap.containsKey(key);
             if (contains) {
               return widgetsMap[key]!;
             } else {
@@ -219,14 +231,18 @@ class _IDKitTableViewState extends State<IDKitTableView> {
       // Fotter view.
       if (widget.footerInSection != null) {
         final String key = 'com.idkit.section.fotter-$section';
-        addStreamWidgetToList(key, (_, AsyncSnapshot<bool> snapshot) {
+        _addStreamWidgetToList(key, (_, AsyncSnapshot<bool> snapshot) {
           final bool state = snapshot.data!;
+          final bool contains = widgetsMap.containsKey(key);
           if (state) {
             final Widget child = widget.footerInSection!(widget, section);
-            widgetsMap.update(key, (_) => child);
+            if (contains) {
+              widgetsMap.update(key, (_) => child);
+            } else {
+              widgetsMap.putIfAbsent(key, () => child);
+            }
             return child;
           } else {
-            final bool contains = widgetsMap.containsKey(key);
             if (contains) {
               return widgetsMap[key]!;
             } else {
@@ -243,14 +259,18 @@ class _IDKitTableViewState extends State<IDKitTableView> {
           section != totalSection - 1 &&
           !_style) {
         final String key = 'com.idkit.separate.section-$section';
-        addStreamWidgetToList(key, (_, AsyncSnapshot<bool> snapshot) {
+        _addStreamWidgetToList(key, (_, AsyncSnapshot<bool> snapshot) {
           final bool state = snapshot.data!;
+          final bool contains = widgetsMap.containsKey(key);
           if (state) {
             final Widget child = widget.separateInSection!(widget, section);
-            widgetsMap.update(key, (_) => child);
+            if (contains) {
+              widgetsMap.update(key, (_) => child);
+            } else {
+              widgetsMap.putIfAbsent(key, () => child);
+            }
             return child;
           } else {
-            final bool contains = widgetsMap.containsKey(key);
             if (contains) {
               return widgetsMap[key]!;
             } else {
@@ -266,14 +286,18 @@ class _IDKitTableViewState extends State<IDKitTableView> {
     // Is it the bottom view of the table view.
     if (widget.footerInTableView != null) {
       const String key = 'com.idkit.fotter';
-      addStreamWidgetToList(key, (_, AsyncSnapshot<bool> snapshot) {
+      _addStreamWidgetToList(key, (_, AsyncSnapshot<bool> snapshot) {
         final bool state = snapshot.data!;
+        final bool contains = widgetsMap.containsKey(key);
         if (state) {
           final Widget child = widget.footerInTableView!(widget);
-          widgetsMap.update(key, (_) => child);
+          if (contains) {
+            widgetsMap.update(key, (_) => child);
+          } else {
+            widgetsMap.putIfAbsent(key, () => child);
+          }
           return child;
         } else {
-          final bool contains = widgetsMap.containsKey(key);
           if (contains) {
             return widgetsMap[key]!;
           } else {
@@ -287,9 +311,9 @@ class _IDKitTableViewState extends State<IDKitTableView> {
   }
 
   /// Add controller components with control stream to the global collection.
-  void addStreamWidgetToList(String key, AsyncWidgetBuilder<bool> builder) {
+  void _addStreamWidgetToList(String key, AsyncWidgetBuilder<bool> builder) {
     final StreamController<bool> streamController =
-        StreamController<bool>.broadcast()..add(false);
+        StreamController<bool>.broadcast();
     streamControllerMap.putIfAbsent(key, () => streamController);
     final Widget streamWidget =
         StreamWidget(streamController: streamController, builder: builder);
