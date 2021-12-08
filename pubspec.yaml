@@ -1,7 +1,7 @@
 name: idkit_tableview
 description: This component is an extension of the partial update of the single list and grouped list views. Functions:\1. Support for the update of a certain view. 2. Support for the update of a certain module view. 3. Support for the update of all views.
 version: 0.0.1
-homepage:
+homepage: https://github.com/zhoushuangjian001/idkit_tableview
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
